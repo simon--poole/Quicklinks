@@ -20,8 +20,8 @@ namespace QuickLinks
 
         private void customCommandToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //Custom Command
-
+            Popup CustomCommand = new Popup();
+            CustomCommand.Show();
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
