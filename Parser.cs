@@ -23,11 +23,11 @@ namespace QuickLinks
     {
         static string checkCommon(string command)
         {
-            ParserRegex[] rules = new ParserRegex[5];
+            ParserRegex[] rules = new ParserRegex[4];
             rules[0] = new ParserRegex(@"\/r\/(.+)", @"Browser http://reddit.com/r/{match}", true);
-            rules[1] = new ParserRegex(@"twitch (.+)", @"Browser http://twitch.tv/{match}", true);
-            rules[3] = new ParserRegex(@"(ogn|ongamenet|champions)", "CMD_hidden livestreamer http://twitch.tv/ongamenet mobile_High", false);
-            rules[4] = new ParserRegex(@"twitch (.+)", @"Browser http://twitch.tv/{match}", true);
+            rules[1] = new ParserRegex(@"(ogn|ongamenet|champions)", "CMD_hidden livestreamer http://twitch.tv/ongamenet mobile_High", false);
+            rules[2] = new ParserRegex(@"twitch (.+)", @"Browser http://twitch.tv/{match}", true);
+            rules[3] = new ParserRegex(@"(twitch|lol|lolstreams)", @"Browser http://twitch.tv/directory/game/League%20of%20Legends", false);
             Match match;
             foreach (ParserRegex current in rules)
             {
