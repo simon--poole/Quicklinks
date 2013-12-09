@@ -4,42 +4,56 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 namespace QuickLinks
 {
+    class ParserRegex
+    {
+        public String regex;
+        public String Results;
+        public Boolean containsMatch;
+        public ParserRegex(String regex1, String result, Boolean match)
+        {
+            this.regex = regex1;
+            this.Results = result;
+            this.containsMatch = match;
+        }
+    }
     static class Parser
     {
         static string checkCommon(string command)
         {
-            System.Text.RegularExpressions.Match match = System.Text.RegularExpressions.Regex.Match(command, @"\/r\/(.+)");
-            if (match.Groups.Count > 1)
+            ParserRegex[] rules = new ParserRegex[5];
+            rules[0] = new ParserRegex(@"\/r\/(.+)", @"Browser http://reddit.com/r/{match}", true);
+            rules[1] = new ParserRegex(@"twitch (.+)", @"Browser http://twitch.tv/{match}", true);
+            rules[3] = new ParserRegex(@"(ogn|ongamenet|champions)", "CMD_hidden livestreamer http://twitch.tv/ongamenet mobile_High", false);
+            rules[4] = new ParserRegex(@"twitch (.+)", @"Browser http://twitch.tv/{match}", true);
+            Match match;
+            foreach (ParserRegex current in rules)
             {
-                string value = "Browser http://reddit.com/r/"+match.Groups[1].Value;
-                return value;
-            }
-            match = System.Text.RegularExpressions.Regex.Match(command, @"twitch (.+)");
-            if (match.Groups.Count > 1)
-            {
-                string value = "Browser http://twitch.tv/" + match.Groups[1].Value;
-                return value;
-            }
-            match = System.Text.RegularExpressions.Regex.Match(command, @"(ogn|ongamenet|champions)");
-            if (match.Groups.Count > 1)
-            {
-                string value = "CMD_hidden livestreamer http://twitch.tv/ongamenet mobile_High";
-                return value;
+                match = Regex.Match(command, current.regex);
+                if (match.Groups.Count > 1)
+                {
+                    string result = current.Results;
+                    if (current.containsMatch)
+                    {
+                        result = result.Replace("{match}", match.Groups[1].Value);
+                    }
+                    return result;
+                }
             }
             match = System.Text.RegularExpressions.Regex.Match(command, @"(\.com|\.co\.uk|www\.)");
-            if (Uri.IsWellFormedUriString(command, UriKind.Absolute))
-            {
-                return "Browser " + command;
-            }
             if(match.Groups.Count > 1 && !Uri.IsWellFormedUriString(command, UriKind.Absolute))
             {
                 UriBuilder builder = new UriBuilder();
                 builder.Host = command;
                 return "Browser "+builder.ToString();
             }
-            return "Error";
+            else if (Uri.IsWellFormedUriString(command, UriKind.Absolute))
+            {
+                return "Browser " + command;
+            }
+            return command;
         }
         public static void Parse(string command)
         {
