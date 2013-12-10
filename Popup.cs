@@ -28,9 +28,20 @@ namespace QuickLinks
         private void Run()
         {
             String Contents = textBox1.Text;
-            String[] commands = Contents.Split('|');
+            String[] commands = Contents.Split(new char[] { '|',(Char)Keys.Return }, 2, System.StringSplitOptions.None);
             foreach(string cmd in commands){
-                Parser.Parse(cmd);
+                if (cmd.Contains("debug"))
+                {
+                    Program.MainForm.Show();
+                }
+                else if (cmd.Contains("hide"))
+                {
+                    Program.MainForm.Hide();
+                }
+                else
+                {
+                    Parser.Parse(cmd);
+                }
             }
         }
 

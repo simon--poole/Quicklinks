@@ -37,13 +37,13 @@
             this.textBox1.Location = new System.Drawing.Point(13, 13);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(421, 128);
+            this.textBox1.Size = new System.Drawing.Size(421, 69);
             this.textBox1.TabIndex = 0;
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(358, 148);
+            this.button1.Location = new System.Drawing.Point(359, 88);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -55,12 +55,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(446, 177);
+            this.ClientSize = new System.Drawing.Size(446, 123);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Name = "Popup";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Custom Command";
+            this.Text = "Command";
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Popup_KeyPress);
             this.ResumeLayout(false);
             this.PerformLayout();

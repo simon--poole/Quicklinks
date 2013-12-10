@@ -6,12 +6,13 @@ using System.Windows.Forms;
 
 namespace QuickLinks
 {
-    static class Program
+    public static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static Form1 MainForm;
+        ///
+        public static Form1 MainForm;
         static void Main()
         {
             Application.EnableVisualStyles();
