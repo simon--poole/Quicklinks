@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 namespace QuickLinks
@@ -36,13 +32,15 @@ namespace QuickLinks
             rules[0] = new ParserRegex(@"\/r\/(.+)", @"Browser http://reddit.com/r/{match}", true);
             rules[1] = new ParserRegex(@"(google|search) (.+)", @"Browser https://www.google.co.uk/?gws_rd=cr&ei=AtumUtL6Nq3Y0QXknIDoDQ#q={match}", true, 2);
             rules[2] = new ParserRegex(@"twitch (.+)", @"Browser http://twitch.tv/{match}", true);
-            rules[3] = new ParserRegex(@"reddit (.+)", @"Browser http://www.reddit.com/#page={match}", true);
-            rules[4] = new ParserRegex(@"(ogn|ongamenet|champions)", "CMD_hidden livestreamer http://twitch.tv/ongamenet mobile_High", false);
-            rules[5] = new ParserRegex(@"(twitch|lol|lolstreams)", @"Browser http://twitch.tv/directory/game/League%20of%20Legends", false);
-            rules[6] = new ParserRegex(@"(twitter|tweet|twit)", @"Browser http://twitter.com", false);
-            rules[7] = new ParserRegex(@"(fb|facebook)", @"Browser http://facebook.com", false);
-            rules[8] = new ParserRegex(@"(reddit|rdt)", @"Browser http://www.reddit.com/", false);
-            rules[9] = new ParserRegex(@"(google|search)", @"Browser http://google.com", false);
+            rules[3] = new ParserRegex(@"wiki (.+)", @"Browser http://wikipedia.org/wiki/{match}", true);
+            rules[4] = new ParserRegex(@"(twitter|tweet|twit)", @"Browser http://twitter.com", false);
+            rules[5] = new ParserRegex(@"(fb|facebook)", @"Browser http://facebook.com", false);
+            rules[5] = new ParserRegex(@"(video|vids)", @"File C:\Users\Simon\Videos", false);
+            rules[6] = new ParserRegex(@"(docs|documents)", @"File C:\Users\Simon\Documents", false);
+            rules[7] = new ParserRegex(@"(pictures|pics)", @"File C:\Users\Simon\Pictures", false);
+            rules[8] = new ParserRegex(@"(music|songs)", @"File C:\Users\Simon\Music", false);
+            rules[9] = new ParserRegex(@"(dl|downloads)", @"File C:\Users\Simon\Downloads", false);
+            rules[9] = new ParserRegex(@"(git|github)", @"Browser http://github.com", false);
             Match match;
             foreach (ParserRegex current in rules)
             {
@@ -77,7 +75,7 @@ namespace QuickLinks
             Debugger.Log("Interpreted as: " + command);
             string[] commands = command.Split(new string[]{" "}, 2,System.StringSplitOptions.None);
             string operand = commands[0];
-            string data = (commands.Length > 1 ? commands[1] : "no data");
+            string data = (commands.Length > 1 ? commands[1] : null);
             Parser.Run(operand, data);
         }
         private static void Run(string operand, string data){
@@ -90,16 +88,6 @@ namespace QuickLinks
                 case "Browser":
                     Debugger.Log("Opening site: " + data);
                     System.Diagnostics.Process.Start(data);
-                    break;
-                case "CMD_hidden":
-                    Debugger.Log("Running command: " + data);
-                    System.Diagnostics.Process process = new System.Diagnostics.Process();
-                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-                    startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-                    startInfo.FileName = "cmd.exe";
-                    startInfo.Arguments = "/c " + data;
-                    process.StartInfo = startInfo;
-                    process.Start();
                     break;
                 default:
                     Debugger.Log("Unknown operand....attempting to run command.");
